@@ -1,236 +1,391 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Dashboard CAT - Dptales Norte</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard CAT - Dptales Norte</title>
+  <style>
+    :root{
+      --panel:#fff;
+      --border:rgba(0,0,0,.06);
+      --shadow:0 10px 35px rgba(0,0,0,.06);
+      --teal1:#0aa3a8;
+      --teal2:#40c3c7;
+      --teal3:#0b7e86;
+      --muted:#6d7c85;
+      --orange:#c8821f;
+      --lime:#6a8d2a;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:radial-gradient(circle at 20% 0%, #f3f5f6, #ffffff 55%);
+      color:#20323a;
+    }
+    .page{
+      max-width:1180px;
+      margin:28px auto;
+      padding:18px;
+      display:grid;
+      grid-template-columns:420px 1fr;
+      gap:22px;
+    }
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:18px 18px 14px;
+    }
+    .panel-title{
+      font-weight:650;
+      font-size:22px;
+      padding:6px 6px 12px;
+    }
+    .panel-foot{
+      display:flex;align-items:center;gap:10px;
+      margin-top:12px;padding:6px;color:var(--muted);font-size:13px;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background:linear-gradient(135deg,var(--teal2),var(--teal1));
+      box-shadow:0 0 0 4px rgba(10,163,168,.12);
+    }
+    .urd-list{display:flex;flex-direction:column;gap:10px;padding:6px;}
+    .urd-row{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:center;}
+    .urd-ico{width:26px;height:26px;display:grid;place-items:center;border-radius:10px;color:var(--teal1);opacity:.95;}
+    .urd-ico svg{width:22px;height:22px;fill:currentColor;}
+    .urd-bar{
+      position:relative;height:44px;border-radius:12px;background:#f2f6f6;overflow:hidden;
+      border:1px solid rgba(0,0,0,.04);
+    }
+    .urd-fill{
+      position:absolute;inset:0 auto 0 0;width:0%;
+      background:linear-gradient(90deg, rgba(64,195,199,.55), rgba(10,163,168,.95));
+      border-radius:12px;transition:width .6s ease;
+    }
+    .urd-meta{
+      position:relative;z-index:2;height:100%;display:flex;align-items:center;justify-content:space-between;
+      padding:0 12px;
+    }
+    .urd-name{font-size:20px;font-weight:600;color:#22343c;}
+    .urd-val{
+      font-size:22px;font-weight:800;color:#fff;padding:6px 10px;border-radius:10px;
+      background:rgba(0,0,0,.18);
+    }
+    .urd-top .urd-bar{background:rgba(10,163,168,.12);border-color:rgba(10,163,168,.18);}
+    .urd-top .urd-fill{background:linear-gradient(90deg, rgba(64,195,199,.7), rgba(10,163,168,1));}
+    .urd-top .urd-name{font-size:24px;}
 
-<style>
-:root{
-  --panel:#fff;
-  --border:rgba(0,0,0,.06);
-  --shadow:0 10px 35px rgba(0,0,0,.06);
-  --teal1:#0aa3a8;
-  --teal2:#40c3c7;
-  --teal3:#0b7e86;
-  --muted:#6d7c85;
-  --orange:#c8821f;
-  --lime:#6a8d2a;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  background:radial-gradient(circle at 20% 0%, #f3f5f6, #ffffff 55%);
-  color:#20323a;
-}
-.page{
-  max-width:1180px;
-  margin:28px auto;
-  padding:18px;
-  display:grid;
-  grid-template-columns:420px 1fr;
-  gap:22px;
-}
-.panel{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:18px;
-  box-shadow:var(--shadow);
-  padding:18px 18px 14px;
-}
-.panel-title{
-  font-weight:650;
-  font-size:22px;
-  padding:6px 6px 12px;
-}
-.panel-foot{
-  display:flex;align-items:center;gap:10px;
-  margin-top:12px;padding:6px;color:var(--muted);font-size:13px;
-}
-.dot{
-  width:10px;height:10px;border-radius:50%;
-  background:linear-gradient(135deg,var(--teal2),var(--teal1));
-  box-shadow:0 0 0 4px rgba(10,163,168,.12);
-}
-.urd-list{display:flex;flex-direction:column;gap:10px;padding:6px;}
-.urd-row{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:center;}
-.urd-ico{width:26px;height:26px;display:grid;place-items:center;border-radius:10px;color:var(--teal1);}
-.urd-ico svg{width:22px;height:22px;fill:currentColor;}
-.urd-bar{
-  position:relative;height:44px;border-radius:12px;background:#f2f6f6;overflow:hidden;
-  border:1px solid rgba(0,0,0,.04);
-}
-.urd-fill{
-  position:absolute;inset:0 auto 0 0;width:0%;
-  background:linear-gradient(90deg, rgba(64,195,199,.55), rgba(10,163,168,.95));
-  border-radius:12px;transition:width .6s ease;
-}
-.urd-meta{
-  position:relative;z-index:2;height:100%;display:flex;align-items:center;justify-content:space-between;
-  padding:0 12px;
-}
-.urd-name{font-size:20px;font-weight:600;color:#22343c;}
-.urd-val{
-  font-size:22px;font-weight:800;color:#fff;padding:6px 10px;border-radius:10px;
-  background:rgba(0,0,0,.18);
-}
-.urd-top .urd-name{font-size:24px;}
+    .header{padding:2px 6px 10px;}
+    .h1{font-size:26px;font-weight:750;}
+    .h1 .muted{font-weight:650;color:#3b4b53;opacity:.9;}
+    .h2{margin-top:4px;font-size:14px;color:var(--muted);letter-spacing:.2px;}
+    .rule{height:4px;border-radius:99px;margin-top:12px;background:linear-gradient(90deg, rgba(10,163,168,1), rgba(10,163,168,.1));}
+    .grid{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .kpi{
+      border-radius:14px;border:1px solid rgba(0,0,0,.06);padding:14px 14px 12px;min-height:118px;
+      box-shadow:0 8px 25px rgba(0,0,0,.04);
+    }
+    .kpi-strong{background:linear-gradient(135deg, rgba(10,163,168,.95), rgba(64,195,199,.75));color:#fff;}
+    .kpi-soft{background:linear-gradient(135deg, #eaf7f3, #dff1ea);}
+    .kpi-white{background:linear-gradient(135deg, #f7fafb, #eef4f5);}
+    .kpi-cream{background:linear-gradient(135deg, #f6f4ea, #f2f0e3);}
+    .kpi-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .kpi-label{font-size:18px;font-weight:650;opacity:.95;}
+    .kpi-value{margin-top:10px;font-size:54px;font-weight:850;letter-spacing:-1px;}
+    .kpi-value-dark{color:#11434a;}
+    .kpi-icon{
+      width:42px;height:42px;display:grid;place-items:center;border-radius:10px;
+      background:rgba(0,0,0,.12);color:#eaffff;
+    }
+    .kpi-soft .kpi-icon{background:rgba(10,163,168,.2);color:var(--teal3);}
+    .kpi-white .kpi-icon{background:rgba(10,163,168,.14);color:var(--teal3);}
+    .kpi-icon svg{width:26px;height:26px;fill:currentColor;}
 
-.header{padding:2px 6px 10px;}
-.h1{font-size:26px;font-weight:750;}
-.h1 .muted{font-weight:650;color:#3b4b53;}
-.h2{margin-top:4px;font-size:14px;color:var(--muted);}
-.rule{height:4px;border-radius:99px;margin-top:12px;background:linear-gradient(90deg, rgba(10,163,168,1), rgba(10,163,168,.1));}
-.grid{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.kpi{
-  border-radius:14px;border:1px solid rgba(0,0,0,.06);padding:14px;
-}
-.kpi-strong{background:linear-gradient(135deg, rgba(10,163,168,.95), rgba(64,195,199,.75));color:#fff;}
-.kpi-soft{background:linear-gradient(135deg, #eaf7f3, #dff1ea);}
-.kpi-white{background:linear-gradient(135deg, #f7fafb, #eef4f5);}
-.kpi-cream{background:linear-gradient(135deg, #f6f4ea, #f2f0e3);}
-.kpi-label{font-size:18px;font-weight:650;}
-.kpi-value{margin-top:10px;font-size:54px;font-weight:850;}
-.kpi-value-dark{color:#11434a;}
-.status{margin-top:12px;padding:10px;border-radius:12px;border:1px dashed rgba(0,0,0,.12);color:var(--muted);font-size:13px;}
-@media(max-width:980px){.page{grid-template-columns:1fr;}}
-</style>
+    .dist{margin-top:10px;display:flex;flex-direction:column;gap:10px;}
+    .dist-row{
+      display:grid;grid-template-columns:1.2fr .5fr 1.2fr .5fr;align-items:center;gap:10px;
+    }
+    .dist-left{display:flex;align-items:center;gap:8px;color:#2b3e46;font-weight:650;}
+    .dist-ico{width:28px;height:28px;border-radius:10px;display:grid;place-items:center;}
+    .dist-ico svg{width:20px;height:20px;fill:currentColor;}
+    .ico-person{background:rgba(10,163,168,.12);color:var(--teal3);}
+    .ico-car{background:rgba(200,130,31,.12);color:var(--orange);}
+    .ico-moto{background:rgba(106,141,42,.12);color:var(--lime);}
+    .dist-val{font-size:22px;font-weight:900;text-align:right;}
+    .mini-note{font-weight:650;color:#62737c;font-size:12px;}
+    .mini-note-val{text-align:right;font-size:12px;color:#62737c;font-weight:700;}
+
+    .status{margin-top:12px;padding:10px 12px;border-radius:12px;border:1px dashed rgba(0,0,0,.12);color:var(--muted);font-size:13px;}
+    @media(max-width:980px){.page{grid-template-columns:1fr;}}
+  </style>
 </head>
-
 <body>
-<div class="page">
+  <div class="page">
+    <section class="panel">
+      <div class="panel-title">Controles por URD</div>
+      <div id="urdList" class="urd-list"></div>
+      <div class="panel-foot">
+        <span class="dot"></span>
+        <span id="leftNote">Actualizando…</span>
+      </div>
+    </section>
 
-<section class="panel">
-<div class="panel-title">Controles por URD</div>
-<div id="urdList" class="urd-list"></div>
-<div class="panel-foot">
-<span class="dot"></span>
-<span id="leftNote">Actualizando…</span>
-</div>
-</section>
+    <section class="panel">
+      <div class="header">
+        <div class="h1">Controles con móviles – <span class="muted">Resultados CAT</span></div>
+        <div id="subtitle" class="h2">DIR. GRAL. DPTALES NORTE – (cargando…)</div>
+        <div class="rule"></div>
+      </div>
 
-<section class="panel">
-<div class="header">
-<div class="h1">Controles con móviles – <span class="muted">Resultados CAT</span></div>
-<div id="subtitle" class="h2">DIR. GRAL. DPTALES NORTE</div>
-<div class="rule"></div>
-</div>
+      <div class="grid">
+        <div class="kpi kpi-strong">
+          <div class="kpi-top">
+            <div class="kpi-label">Controles</div>
+            <div class="kpi-icon">
+              <svg viewBox="0 0 24 24"><path d="M9.2 16.6 4.9 12.3l-1.4 1.4 5.7 5.7L20.5 8l-1.4-1.4z"/></svg>
+            </div>
+          </div>
+          <div id="kpiControles" class="kpi-value">—</div>
+        </div>
 
-<div class="grid">
-<div class="kpi kpi-strong">
-<div class="kpi-label">Controles</div>
-<div id="kpiControles" class="kpi-value">—</div>
-</div>
+        <div class="kpi kpi-soft">
+          <div class="kpi-top">
+            <div class="kpi-label">Positivos</div>
+            <div class="kpi-icon">
+              <svg viewBox="0 0 24 24"><path d="M9.2 16.6 4.9 12.3l-1.4 1.4 5.7 5.7L20.5 8l-1.4-1.4z"/></svg>
+            </div>
+          </div>
+          <div id="kpiPositivos" class="kpi-value kpi-value-dark">—</div>
+        </div>
 
-<div class="kpi kpi-soft">
-<div class="kpi-label">Positivos</div>
-<div id="kpiPositivos" class="kpi-value kpi-value-dark">—</div>
-</div>
+        <div class="kpi kpi-white">
+          <div class="kpi-top">
+            <div class="kpi-label">Tasa positivos</div>
+            <div class="kpi-icon">
+              <svg viewBox="0 0 24 24"><path d="M16 6h6v6h-2V9.4l-6.3 6.3-4-4L2 19.4 3.4 21l6.3-6.3 4 4L21 11.4V14h2V6h-7z"/></svg>
+            </div>
+          </div>
+          <div id="kpiTasa" class="kpi-value kpi-value-dark">—</div>
+        </div>
 
-<div class="kpi kpi-white">
-<div class="kpi-label">Tasa positivos</div>
-<div id="kpiTasa" class="kpi-value kpi-value-dark">—</div>
-</div>
-</div>
+        <div class="kpi kpi-cream">
+          <div class="kpi-top"><div class="kpi-label">Distribución</div></div>
 
-<div id="status" class="status">Cargando datos…</div>
-</section>
-</div>
+          <div class="dist">
+            <div class="dist-row">
+              <div class="dist-left">
+                <span class="dist-ico ico-person">
+                  <svg viewBox="0 0 24 24"><path d="M12 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg>
+                </span>
+                <span>Personas</span>
+              </div>
+              <div id="distPersonas" class="dist-val" style="color:var(--teal3)">—</div>
 
-<script>
-const CONFIG = {
-SHEET_ID: "1iKuO0d3x3XVcEYWJfvisvDh5CFAOPEp0mOX-phByw00",
-SHEET_NAME: "Hoja 1"
-};
+              <div class="dist-left">
+                <span class="dist-ico ico-car">
+                  <svg viewBox="0 0 24 24"><path d="M18.9 6.3A2 2 0 0 0 17.1 5H6.9A2 2 0 0 0 5.1 6.3L3 11v8a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-1h8v1a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-8l-2.1-4.7zM6.9 7h10.2l1.2 3H5.7l1.2-3zM6.5 16A1.5 1.5 0 1 1 8 14.5 1.5 1.5 0 0 1 6.5 16zm11 0A1.5 1.5 0 1 1 19 14.5 1.5 1.5 0 0 1 17.5 16z"/></svg>
+                </span>
+                <span>Autos</span>
+              </div>
+              <div id="distAutos" class="dist-val" style="color:var(--orange)">—</div>
+            </div>
 
-const $ = (s) => document.querySelector(s);
+            <div class="dist-row">
+              <div class="dist-left">
+                <span class="dist-ico ico-moto">
+                  <svg viewBox="0 0 24 24"><path d="M19 8h-3.3l-1-2H11V4h5l1 2H19a3 3 0 1 1-2.2 5.1l-2.2 2.2H11l-1.2 2.4A3.5 3.5 0 1 1 8 13h2l1-2h4l2-2A3 3 0 0 1 19 8zM6.5 19A1.5 1.5 0 1 0 5 17.5 1.5 1.5 0 0 0 6.5 19zm12 0a1.5 1.5 0 1 0-1.5-1.5 1.5 1.5 0 0 0 1.5 1.5z"/></svg>
+                </span>
+                <span>Motos</span>
+              </div>
+              <div id="distMotos" class="dist-val" style="color:var(--lime)">—</div>
 
-function norm(v){
-return String(v ?? "").trim().toUpperCase();
-}
-function toNumber(v){
-const n=parseFloat(String(v).replace(/\./g,"").replace(/,/g,"."));
-return Number.isFinite(n)?n:0;
-}
-function formatInt(n){ return new Intl.NumberFormat("es-AR").format(Math.round(n||0)); }
-function formatPct(n){
-return new Intl.NumberFormat("es-AR",{minimumFractionDigits:2,maximumFractionDigits:2}).format(n||0)+"%";
-}
+              <div class="dist-left"><span class="mini-note">Última actualización</span></div>
+              <div id="updatedAt" class="mini-note-val">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-function buildUrl(){
-return `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:json`;
-}
+      <div id="status" class="status">Cargando datos…</div>
+    </section>
+  </div>
 
-async function fetchRows(){
-const res=await fetch(buildUrl(),{cache:"no-store"});
-const text=await res.text();
-const jsonStr=text.substring(text.indexOf("{"),text.lastIndexOf("}")+1);
-const data=JSON.parse(jsonStr);
-return (data.table.rows||[]).map(r=>(r.c||[]).map(c=>c?c.v:null));
-}
+  <script>
+    const CONFIG = {
+      SHEET_ID: "1iKuO0d3x3XVcEYWJfvisvDh5CFAOPEp0mOX-phByw00",
+      SHEET_NAME: "Hoja 1"
+    };
 
-function renderURD(items){
-const host=$("#urdList");
-host.innerHTML="";
-const max=Math.max(...items.map(x=>x.value));
-items.forEach((it,idx)=>{
-const pct=max?(it.value/max)*100:0;
-const row=document.createElement("div");
-row.className="urd-row"+(idx===0?" urd-top":"");
-row.innerHTML=`
-<div class="urd-ico">🏢</div>
-<div class="urd-bar">
-<div class="urd-fill" style="width:${pct}%;"></div>
-<div class="urd-meta">
-<div class="urd-name">${it.name}</div>
-<div class="urd-val">${formatInt(it.value)}</div>
-</div>
-</div>`;
-host.appendChild(row);
-});
-}
+    const $ = (s) => document.querySelector(s);
 
-(async function main(){
-try{
-$("#status").textContent="Cargando datos…";
-const rows=await fetchRows();
+    function norm(v){
+      return String(v ?? "").trim().toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    }
+    function toNumber(v){
+      if(v==null) return 0;
+      if(typeof v==="number") return v;
+      const s=String(v).trim();
+      if(!s) return 0;
+      const cleaned=s.replace(/\s/g,"").replace(/\./g,"").replace(/,/g,".");
+      const n=parseFloat(cleaned);
+      return Number.isFinite(n)?n:0;
+    }
+    function formatInt(n){ return new Intl.NumberFormat("es-AR").format(Math.round(n||0)); }
+    function formatPct(n){
+      return new Intl.NumberFormat("es-AR",{minimumFractionDigits:2,maximumFractionDigits:2}).format(n||0)+"%";
+    }
+    function parseGvizDate(v){
+      if(!v) return null;
+      if(v instanceof Date) return v;
+      const s=String(v);
+      const m=s.match(/Date\((\d{4}),(\d{1,2}),(\d{1,2})/i);
+      if(m) return new Date(+m[1],+m[2],+m[3]);
+      const d=new Date(s);
+      return isNaN(d.getTime())?null:d;
+    }
+    function fmtDMY(d){
+      const dd=String(d.getDate()).padStart(2,"0");
+      const mm=String(d.getMonth()+1).padStart(2,"0");
+      return `${dd}/${mm}/${d.getFullYear()}`;
+    }
+    function buildUrl(){
+      const tq=encodeURIComponent("select *");
+      return `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:json&headers=0&tq=${tq}&sheet=${encodeURIComponent(CONFIG.SHEET_NAME)}`;
+    }
+    async function fetchRows(){
+      const res=await fetch(buildUrl(),{cache:"no-store"});
+      const text=await res.text();
+      const jsonStr=text.substring(text.indexOf("{"),text.lastIndexOf("}")+1);
+      const data=JSON.parse(jsonStr);
+      return (data.table.rows||[]).map(r=>(r.c||[]).map(c=>c?c.v:null));
+    }
 
-let items=[];
-let total={controles:0,positivos:0};
+    function findHeaderRow(rows){
+      for(let i=0;i<rows.length;i++){
+        const idx=rows[i].map(norm).indexOf("DEPARTAMENTAL");
+        if(idx!==-1) return {rowIndex:i,colDept:idx};
+      }
+      return {rowIndex:-1,colDept:-1};
+    }
 
-rows.forEach(r=>{
-if(!r[0] || norm(r[0])==="DEPARTAMENTAL") return;
-if(norm(r[0])==="TOTAL"){
-total.controles=toNumber(r[1]);
-total.positivos=toNumber(r[2]);
-return;
-}
-items.push({
-dept:r[0],
-controles:toNumber(r[1]),
-positivos:toNumber(r[2])
-});
-});
+    function extractDesdeHasta(rows){
+      for(let i=0;i<Math.min(rows.length,15);i++){
+        const rN=rows[i].map(norm);
+        const d=rN.indexOf("DESDE");
+        const h=rN.indexOf("HASTA");
+        if(d!==-1 && h!==-1){
+          const d1=parseGvizDate(rows[i][d+1])||rows[i][d+1];
+          const d2=parseGvizDate(rows[i][h+1])||rows[i][h+1];
+          const desde=(d1 instanceof Date)?fmtDMY(d1):String(d1??"").trim();
+          const hasta=(d2 instanceof Date)?fmtDMY(d2):String(d2??"").trim();
+          return {desde,hasta};
+        }
+      }
+      return {desde:"",hasta:""};
+    }
 
-$("#kpiControles").textContent=formatInt(total.controles);
-$("#kpiPositivos").textContent=formatInt(total.positivos);
-$("#kpiTasa").textContent=formatPct(total.controles?(total.positivos/total.controles)*100:0);
+    function renderURD(items){
+      const host=$("#urdList");
+      host.innerHTML="";
+      if(!items.length){ host.innerHTML=`<div class="status">Sin datos</div>`; return; }
+      const max=Math.max(...items.map(x=>x.value));
+      items.forEach((it,idx)=>{
+        const pct=max?(it.value/max)*100:0;
+        const row=document.createElement("div");
+        row.className="urd-row"+(idx===0?" urd-top":"");
+        row.innerHTML=`
+          <div class="urd-ico">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg>
+          </div>
+          <div class="urd-bar">
+            <div class="urd-fill" style="width:${pct}%;"></div>
+            <div class="urd-meta">
+              <div class="urd-name">${it.name}</div>
+              <div class="urd-val">${formatInt(it.value)}</div>
+            </div>
+          </div>`;
+        host.appendChild(row);
+      });
+    }
 
-renderURD(
-items
-.sort((a,b)=> b.controles - a.controles)
-.map(x=>({name:x.dept,value:x.controles}))
-);
+    (async function main(){
+      try{
+        $("#status").textContent="Cargando datos…";
+        const rows=await fetchRows();
 
-const now=new Date();
-$("#leftNote").textContent=`Fuente: Google Sheet · ${now.toLocaleTimeString("es-AR",{hour12:false})}`;
-$("#status").textContent="OK";
+        const {desde,hasta}=extractDesdeHasta(rows);
+        $("#subtitle").textContent = (desde && hasta)
+          ? `DIR. GRAL. DPTALES NORTE – (${desde} al ${hasta})`
+          : `DIR. GRAL. DPTALES NORTE – Resumen`;
 
-}catch(e){
-$("#status").textContent="ERROR: "+e.message;
-}
-})();
-</script>
+        const h=findHeaderRow(rows);
+        if(h.rowIndex<0) throw new Error("No se encontró encabezado DEPARTAMENTAL.");
+
+        const header=rows[h.rowIndex].map(norm);
+        const colDept=h.colDept;
+
+        // columnas (por nombre, y fallback por posición)
+        const colCant=header.indexOf("CANTIDAD")!==-1?header.indexOf("CANTIDAD"):colDept+1;
+        const colRes =header.indexOf("RESULTADOS")!==-1?header.indexOf("RESULTADOS"):colDept+2;
+        const colPer =header.indexOf("PERSONAS")!==-1?header.indexOf("PERSONAS"):colDept+3;
+        const colAut =header.indexOf("AUTOS")!==-1?header.indexOf("AUTOS"):colDept+4;
+        const colMot =header.indexOf("MOTOS")!==-1?header.indexOf("MOTOS"):colDept+5;
+
+        const items=[];
+        let total=null;
+
+        for(let i=h.rowIndex+1;i<rows.length;i++){
+          const r=rows[i];
+          const dept=String(r[colDept]??"").trim();
+          if(!dept) continue;
+
+          if(norm(dept)==="TOTAL"){
+            total={
+              controles:toNumber(r[colCant]),
+              positivos:toNumber(r[colRes]),
+              personas:toNumber(r[colPer]),
+              autos:toNumber(r[colAut]),
+              motos:toNumber(r[colMot]),
+            };
+            break;
+          }
+
+          items.push({
+            dept,
+            controles: toNumber(r[colCant]),
+            positivos: toNumber(r[colRes]),
+          });
+        }
+
+        if(!total) throw new Error("No se encontró la fila TOTAL en la tabla.");
+
+        $("#kpiControles").textContent=formatInt(total.controles);
+        $("#kpiPositivos").textContent=formatInt(total.positivos);
+        $("#kpiTasa").textContent=formatPct(total.controles?(total.positivos/total.controles)*100:0);
+
+        $("#distPersonas").textContent=formatInt(total.personas);
+        $("#distAutos").textContent=formatInt(total.autos);
+        $("#distMotos").textContent=formatInt(total.motos);
+
+        // ✅ ranking por CONTROLES
+        renderURD(
+          items
+            .sort((a,b)=>b.controles-a.controles)
+            .map(x=>({name:x.dept,value:x.controles}))
+        );
+
+        const now=new Date();
+        $("#updatedAt").textContent=now.toLocaleString("es-AR",{hour12:false});
+        $("#leftNote").textContent=`Fuente: Google Sheet · ${now.toLocaleTimeString("es-AR",{hour12:false})}`;
+        $("#status").textContent="OK";
+      }catch(e){
+        console.error(e);
+        $("#status").textContent="ERROR: "+e.message;
+      }
+    })();
+  </script>
 </body>
 </html>
